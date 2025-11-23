@@ -1,0 +1,301 @@
+%!TEX program = xelatex
+\documentclass[8pt, landscape, a4paper]{extarticle}
+
+% --- 核心宏包 ---
+\usepackage[UTF8, fontset=fandol]{ctex}
+\usepackage[margin=0.8cm, top=1cm, bottom=1.3cm]{geometry}
+\usepackage{multicol}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fontspec}
+
+% --- 去掉页码 ---
+\pagestyle{empty}
+
+% --- 颜色定义 ---
+\definecolor{headerblue}{RGB}{41, 128, 185}
+\definecolor{section1}{RGB}{22, 160, 133} 
+\definecolor{section2}{RGB}{41, 128, 185} 
+\definecolor{section3}{RGB}{142, 68, 173} 
+\definecolor{section4}{RGB}{211, 84, 0}   
+\definecolor{section5}{RGB}{192, 57, 43}  
+\definecolor{section6}{RGB}{44, 62, 80}   
+\definecolor{dividergray}{RGB}{220, 220, 220}
+
+% --- 全局设置 ---
+\setlength{\parindent}{0pt}
+\setlength{\columnsep}{0.4cm} 
+\linespread{1.1} 
+
+% --- 列表样式 ---
+\setlist[itemize]{leftmargin=1.5em, nosep, itemsep=2pt, topsep=2pt, label=$\vcenter{\hbox{\tiny$\bullet$}}$}
+\setlist[description]{leftmargin=0.2em, style=sameline, nosep, itemsep=2pt, font=\bfseries}
+
+% --- Box 样式 ---
+\newtcolorbox{mybox}[2][]{%
+  colback=white,
+  colframe=#2,
+  coltitle=white,
+  boxrule=1pt,             
+  arc=2mm,                 
+  left=5pt, right=5pt, top=5pt, bottom=5pt, 
+  toptitle=3pt, bottomtitle=3pt, 
+  fonttitle=\bfseries\sffamily\large,
+  title={#1},
+  after skip=6pt          
+}
+
+% --- 自定义命令 ---
+\newcommand{\subt}[1]{{\vspace{3pt}\textbf{\large \textcolor{black}{#1}}}}
+
+\newcommand{\boxdesc}[1]{%
+    \textit{\small \textcolor{gray}{#1}}%
+    \par\vspace{3pt}%
+    {\color{dividergray}\hrule height 0.5pt}%
+    \vspace{3pt}%
+}
+
+\newcommand{\sepline}{%
+    \vspace{3pt}%
+    {\color{dividergray}\hrulefill}%
+    \vspace{1pt}%
+}
+
+\begin{document}
+
+% --- 页眉 ---
+\begin{center}
+    {\Huge \textbf{\sffamily 高阶程序员数学武器库 Cheat Sheet}} \\
+    \vspace{0.2cm}
+    {\large \texttt{Math for Advanced Developers: From Engineering to Truth}}
+\end{center}
+
+% --- 开始四栏布局 ---
+\begin{multicols*}{4}
+
+% === 第一栏 ===
+
+\begin{mybox}[�� 极简决策树 (Decision Tree)]{headerblue}
+    % 【调整1】增加了 BoxDesc
+    \boxdesc{快速定位技术瓶颈的数学解法} 
+    
+    % 调整了间距以填满空间
+    \begin{itemize}[itemsep=4pt] 
+        \item 有\textbf{波}或\textbf{周期}? $\to$ 傅里叶 / 复变
+        \item 有\textbf{网络}或\textbf{依赖}? $\to$ 图论
+        \item 系统\textbf{不稳}或\textbf{发散}? $\to$ 拉普拉斯 / 极点
+        \item 数据\textbf{存不下}或\textbf{算太慢}? $\to$ 线代 / 信息论
+        \item 资源\textbf{分配}或\textbf{调度}? $\to$ 凸优化 (规划)
+        \item 协议\textbf{设计}或\textbf{校验}? $\to$ 抽象代数 / 形式化
+        \item 要搞\textbf{加密}或\textbf{纠错}? $\to$ 有限域 (GF)
+        \item 要搞\textbf{架构}或\textbf{编译器}? $\to$ 范畴论 / 类型论
+    \end{itemize}
+\end{mybox}
+\vspace*{\fill}
+\begin{mybox}[1. 基础与描述 (Foundation)]{section1}
+    \boxdesc{描述世界的基石，日常开发最常用}
+    
+    \subt{线性代数 (Linear Algebra)}
+    \begin{itemize}
+        \item \textbf{核心}: 空间的变换 (Space Transformation)
+        \item \textbf{关键}: 矩阵, 特征值, SVD, 秩
+        \item \textbf{应用}: AI 训练, 推荐系统, PCA 降维
+    \end{itemize}
+    \sepline
+    
+    \subt{概率统计 (Probability)}
+    \begin{itemize}
+        \item \textbf{核心}: 处理不确定性
+        \item \textbf{关键}: 分布 (高斯/泊松), 贝叶斯 $P(A|B)$
+        \item \textbf{应用}: 负载均衡, A/B 测试, 风控
+    \end{itemize}
+    \sepline
+    
+    \subt{图论 (Graph Theory)}
+    \begin{itemize}
+        \item \textbf{核心}: 关系与结构
+        \item \textbf{关键}: DAG, 拓扑排序, 最短路径
+        \item \textbf{应用}: 依赖管理 (Pip), 死锁检测, 调度
+    \end{itemize}
+    \sepline
+    
+    \subt{信息论 (Information Theory)}
+    \begin{itemize}
+        \item \textbf{核心}: 数据的量化
+        \item \textbf{关键}: 熵 (Entropy), 互信息, 交叉熵
+        \item \textbf{应用}: 压缩 (Huffman), 密码强度
+    \end{itemize}
+\end{mybox}
+% 【关键修改2】强制换栏，确保 \fill 生效
+\columnbreak
+% === 第二栏 ===
+
+\begin{mybox}[2. 信号与变换 (Transforms)]{section2}
+    \boxdesc{解决“波动”、“周期”与“稳定性”}
+
+    \subt{复变函数 (Complex Analysis)}
+    \begin{itemize}
+        \item \textbf{核心}: 旋转与降维
+        \item \textbf{公式}: $e^{ix} = \cos x + i\sin x$
+        \item \textbf{应用}: 交流电, 流体力学 (保角映射)
+    \end{itemize}
+    \sepline
+
+    \subt{傅里叶变换 (Fourier)}
+    \begin{itemize}
+        \item \textbf{核心}: 频域视角 (Time vs Freq)
+        \item \textbf{关键}: 卷积定理, FFT ($O(N \log N)$)
+        \item \textbf{应用}: 音频处理, 图像压缩, 大数乘法
+    \end{itemize}
+    \sepline
+
+    \subt{拉普拉斯 / Z 变换}
+    \begin{itemize}
+        \item \textbf{核心}: 系统稳定性 (S域 / Z域)
+        \item \textbf{关键}: 极点 (Poles), 收敛域
+        \item \textbf{应用}: 控制系统 (PID), 数字滤波 (DSP)
+    \end{itemize}
+\end{mybox}
+\vspace*{\fill}
+\begin{mybox}[3. 计算与博弈 (Computation)]{section3}
+    \boxdesc{解决“怎么算最快”和“怎么选最优”}
+
+    \subt{数值分析 (Numerical Analysis)}
+    \begin{itemize}
+        \item \textbf{痛点}: 浮点误差 ($0.1+0.2 \neq 0.3$)
+        \item \textbf{解法}: 迭代法, 条件数分析
+        \item \textbf{场景}: 物理引擎, 高频交易, 科学计算
+    \end{itemize}
+    \sepline
+
+    \subt{凸优化 (Convex Optimization)}
+    \begin{itemize}
+        \item \textbf{痛点}: 在万千可能中找唯一最优
+        \item \textbf{解法}: 梯度下降, 拉格朗日对偶
+        \item \textbf{场景}: 深度学习训练, 物流调度
+    \end{itemize}
+    \sepline
+
+    \subt{博弈论 (Game Theory)}
+    \begin{itemize}
+        \item \textbf{痛点}: 对手也在变，无静态最优
+        \item \textbf{解法}: 纳什均衡 (Nash Equilibrium)
+        \item \textbf{场景}: 区块链共识, GAN 对抗网络
+    \end{itemize}
+\end{mybox}
+\columnbreak
+% === 第三栏 ===
+
+\begin{mybox}[4. 结构与逻辑 (Logic)]{section4}
+    \boxdesc{架构师与安全专家的底层内功}
+
+    \subt{抽象代数 (Abstract Algebra)}
+    \begin{itemize}
+        \item \textbf{本质}: 定义运算规则 (群/环/域)
+        \item \textbf{有限域}: $GF(2^8)$ $\to$ 计算机完美算术
+        \item \textbf{应用}: AES 加密, RAID 纠错, ECC
+    \end{itemize}
+    \sepline
+
+    \subt{范畴论 (Category Theory)}
+    \begin{itemize}
+        \item \textbf{本质}: 组合与解耦 (Morphism)
+        \item \textbf{概念}: Functor, Monad (单子)
+        \item \textbf{应用}: 函数式编程, 异步模型
+    \end{itemize}
+    \sepline
+
+    \subt{类型论 (Type Theory)}
+    \begin{itemize}
+        \item \textbf{本质}: 代码即真理
+        \item \textbf{原理}: Curry-Howard 同构
+        \item \textbf{应用}: 形式化验证, 编译器 (Rust)
+    \end{itemize}
+\end{mybox}
+\vspace*{\fill}
+\begin{mybox}[5. 高维与动态 (Dynamics)]{section5}
+    \boxdesc{AI 和前沿物理的核心}
+
+    \subt{流形 (Manifold)}
+    \begin{itemize}
+        \item \textbf{定义}: 高维空间中卷曲的低维曲面
+        \item \textbf{洞察}: 数据是有形状的 (Embedding)
+        \item \textbf{应用}: 深度学习原理, 降维
+    \end{itemize}
+    \sepline
+
+    \subt{随机微积分 (Stochastic Calc)}
+    \begin{itemize}
+        \item \textbf{公式}: $dX_t = \mu dt + \sigma dW_t$
+        \item \textbf{特征}: 确定性趋势 + 随机噪声
+        \item \textbf{应用}: 生成式 AI (Diffusion), 定价
+    \end{itemize}
+    \sepline
+
+    \subt{拓扑学 (Topology)}
+    \begin{itemize}
+        \item \textbf{关注}: 连通性与洞 (忽略距离)
+        \item \textbf{关键}: 同胚, 贝蒂数 (Betti Numbers)
+        \item \textbf{应用}: 拓扑数据分析 (TDA), 鲁棒性
+    \end{itemize}
+\end{mybox}
+\columnbreak
+% === 第四栏 ===
+
+\begin{mybox}[6. 上帝视角 (The Endgame)]{section6}
+    \boxdesc{触碰物理法则与计算边界}
+    
+    \subt{泛函分析 (Functional)}
+    \begin{itemize}[itemsep=3pt]
+        \item 无限维线性代数; 希尔伯特空间
+        \item $\hookrightarrow$ 量子计算 / 核方法 (SVM)
+    \end{itemize}
+    \sepline
+    
+    \subt{辛几何 (Symplectic)}
+    \begin{itemize}[itemsep=3pt]
+        \item 能量与相空间体积守恒 (哈密顿)
+        \item $\hookrightarrow$ 高保真物理仿真 (HMC)
+    \end{itemize}
+    \sepline
+
+    \subt{代数几何 (Algebraic Geom)}
+    \begin{itemize}[itemsep=3pt]
+        \item 方程与形状的统一; 概形 (Scheme)
+        \item $\hookrightarrow$ 零知识证明 (ZKP), 隐私计算
+    \end{itemize}
+    \sepline
+
+    \subt{张量分析 (Tensor Calculus)}
+    \begin{itemize}[itemsep=3pt]
+        \item 坐标无关的物理真理; 协变/逆变
+        \item $\hookrightarrow$ 广义相对论 / AI 底层架构
+    \end{itemize}
+\end{mybox}
+\vspace*{\fill}
+\begin{mybox}[�� 核心心法 (Philosophy)]{headerblue}
+    % 【调整2】将名言移至 BoxDesc
+    \boxdesc{“手中无剑 (不背细节)，心中有剑 (深知原理)。”}
+    
+    % 【调整4】使用 \hspace{2em} 实现中文段首缩进
+    \hspace{2em}数学不是枯燥的计算题，而是你认知世界的\textbf{显微镜}与\textbf{望远镜}。这个武器库存在的意义，是从工程的“How”上升到数学的“What”：
+    
+    % 【调整3】增加了内容，扩充了行距，填满右下角
+    \begin{itemize}[itemsep=5pt] 
+        \item \textbf{建立索引}：遇到瓶颈时，不要暴力试错，先查表寻找是否存在降维打击的数学工具。
+        \item \textbf{洞察本质}：代码是逻辑的载体，工程是数学的近似。透过复杂的框架，看到背后不变的数学结构。
+        \item \textbf{识别同构}：发现不同系统间（如电路与流体、逻辑与几何）的数学同构性，实现知识迁移。
+        \item \textbf{第一原理}：基于公理推演而非经验堆砌，用数学思维构建反脆弱的系统架构。
+
+    \end{itemize}
+    
+    \vspace{3pt} 
+    \centering\textit{\footnotesize 当你凝视深渊(底层原理)时，深渊也在为你提供无尽的算力。}
+\end{mybox}
+
+\end{multicols*}
+
+\end{document}

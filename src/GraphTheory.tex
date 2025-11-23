@@ -1,0 +1,330 @@
+%!TEX program = xelatex
+\documentclass[8pt, landscape, a4paper]{extarticle}
+
+% --- 核心宏包 ---
+\usepackage[UTF8, fontset=fandol]{ctex}
+\usepackage[margin=0.8cm, top=1cm, bottom=1.3cm]{geometry}
+\usepackage{multicol}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fontspec}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, graphs, positioning}
+
+% --- 去掉页码 ---
+\pagestyle{empty}
+
+% --- 颜色定义 (橙色主题) ---
+\definecolor{headerblue}{RGB}{230, 126, 34}    % 主题橙 (Carrot)
+\definecolor{navcolor}{RGB}{211, 84, 0}        % 导航橙 (Pumpkin)
+\definecolor{intuitioncolor}{RGB}{41, 128, 185}% 直觉蓝
+\definecolor{accentcolor}{RGB}{192, 57, 43}    % 强调红
+\definecolor{section2}{RGB}{22, 160, 133}      % 绿色 (辅助)
+\definecolor{dividergray}{RGB}{220, 220, 220}
+
+% --- 全局设置 ---
+\setlength{\parindent}{0pt}
+\setlength{\columnsep}{0.4cm} 
+\linespread{1.1} 
+
+% --- 列表样式 ---
+\setlist[itemize]{leftmargin=1.2em, nosep, itemsep=2pt, topsep=2pt, label=$\textcolor{headerblue}{\vcenter{\hbox{\tiny$\bullet$}}}$ }
+\setlist[description]{leftmargin=0.2em, style=sameline, nosep, itemsep=2pt, font=\bfseries}
+
+% --- Box 样式 ---
+\newtcolorbox{mybox}[2][]{%
+  colback=white,
+  colframe=#2,
+  coltitle=white,
+  boxrule=1pt,             
+  arc=2mm,                 
+  left=4pt, right=4pt, top=3pt, bottom=3pt, 
+  toptitle=3pt, bottomtitle=3pt, 
+  fonttitle=\bfseries\sffamily\large,
+  title={#1},
+  after skip=5pt          
+}
+
+% --- 自定义命令 ---
+\newcommand{\subt}[1]{{\vspace{2pt}\textbf{\large \textcolor{black}{#1}}}}
+
+\newcommand{\boxdesc}[1]{%
+    \textit{\small \textcolor{gray}{#1}}%
+    \par\vspace{2pt}%
+    {\color{dividergray}\hrule height 0.5pt}%
+    \vspace{2pt}%
+}
+
+\newcommand{\sepline}{%
+    \par \vspace{3pt}%
+    {\color{dividergray}\hrule height 0.5pt}%
+    \par \vspace{3pt}%
+}
+
+% 公式间距
+\setlength{\abovedisplayskip}{3pt}
+\setlength{\belowdisplayskip}{3pt}
+
+\begin{document}
+
+% --- 页眉 ---
+\begin{center}
+    {\Huge \textbf{\sffamily \textcolor{headerblue}{图论 Graph Theory Cheat Sheet}}} \\
+    \vspace{0.2cm}
+    {\large \texttt{The Structure of Relationships: From Social Networks to Dependency Trees}}
+\end{center}
+
+% --- 开始四栏布局 ---
+\begin{multicols*}{4}
+
+% === 第一栏 ===
+
+\begin{mybox}[️ 场景导航 (Use Cases)]{navcolor}
+    \boxdesc{遇到什么问题 $\to$ 用什么工具}
+    \begin{itemize}[itemsep=2pt]
+        \item \textbf{任务调度/依赖} $\to$ 拓扑排序 (Topological Sort)
+        \item \textbf{地图导航/路由} $\to$ 最短路径 (Dijkstra / A*)
+        \item \textbf{社交推荐/六度} $\to$ 随机游走 / PageRank
+        \item \textbf{死锁检测} $\to$ 环检测 (Cycle Detection)
+        \item \textbf{网络最大流量} $\to$ 最大流最小割 (Max-Flow)
+        \item \textbf{聚类/社群发现} $\to$ 谱聚类 (Spectral)
+    \end{itemize}
+\end{mybox}
+
+\begin{mybox}[1. 基础定义 (Foundations)]{headerblue}
+    \boxdesc{点与线的抽象世界}
+    
+    \subt{图的构成 $G=(V, E)$}
+    \begin{itemize}
+        \item \textbf{V (Vertex)}: 节点 (实体)。$|V|=n$。
+        \item \textbf{E (Edge)}: 边 (关系)。$|E|=m$。
+        \item \textbf{度 (Degree)}: 连接边的数量。$\sum \deg(v) = 2m$ (握手定理)。
+    \end{itemize}
+    \sepline
+
+    \subt{存储方式}
+    \begin{itemize}
+        \item \textbf{邻接矩阵}: $A_{ij}=1$ (稠密图, $O(1)$ 查询)。
+        \item \textbf{邻接表}: List[u] = [v1, v2] (稀疏图, 省空间)。
+    \end{itemize}
+    \sepline
+    
+    \subt{连通性 (Connectivity)}
+    \begin{itemize}
+        \item \textbf{强连通 (SCC)}: 有向图中任意两点互达。
+        \item \textbf{弱连通}: 忽略方向后连通。
+    \end{itemize}
+\end{mybox}
+
+\begin{mybox}[2. 遍历与搜索 (Traversal)]{headerblue}
+    \boxdesc{不重不漏地访问每个角落}
+    
+    \subt{DFS (深度优先)}
+    \begin{itemize}
+        \item \textbf{栈/递归}: 一条路走到黑，撞墙回溯。
+        \item \textbf{应用}: 连通性、拓扑排序、环检测。
+        \item \textbf{时间}: $O(n+m)$。
+    \end{itemize}
+    \sepline
+    
+    \subt{BFS (广度优先)}
+    \begin{itemize}
+        \item \textbf{队列}: 层层推进，像水波纹。
+        \item \textbf{应用}: 无权图最短路径、Web爬虫。
+        \item \textbf{性质}: 首次访问即最短距离 (无权)。
+    \end{itemize}
+\end{mybox}
+
+\columnbreak
+
+% === 第二栏 ===
+
+\begin{mybox}[3. 核心算法 (Algorithms)]{headerblue}
+    \boxdesc{图论皇冠上的明珠}
+    
+    \subt{最短路径 (Shortest Path)}
+    \begin{itemize}
+        \item \textbf{Dijkstra}: 贪心 + 优先队列。$O(m \log n)$。
+        \textit{限制: 边权非负。}
+        \item \textbf{Bellman-Ford}: 动态规划。$O(mn)$。
+        \textit{能力: 处理负权边，检测负环。}
+        \item \textbf{Floyd-Warshall}: 所有点对。$O(n^3)$。
+    \end{itemize}
+    \sepline
+    
+    \subt{最小生成树 (MST)}
+    连接所有点且总权值最小 (造价最低的网络)。
+    \begin{itemize}
+        \item \textbf{Prim}: 从一点出发长树 (切分定理)。
+        \item \textbf{Kruskal}: 并查集加边 (贪心)。
+    \end{itemize}
+    \sepline
+    
+    \subt{拓扑排序 (Topo Sort)}
+    \begin{itemize}
+        \item \textbf{对象}: DAG (有向无环图)。
+        \item \textbf{算法}: 不断移除入度为 0 的点。
+        \item \textbf{应用}: 编译依赖 (Makefile), 任务流。
+    \end{itemize}
+\end{mybox}
+
+\begin{mybox}[4. 谱图论 (Spectral Graph)]{headerblue}
+    \boxdesc{用线性代数研究图结构}
+    
+    \subt{拉普拉斯矩阵 (Laplacian)}
+    $$ L = D - A $$
+    ($D$: 度矩阵, $A$: 邻接矩阵)。
+    \sepline
+    
+    \subt{代数连通度 (Fiedler Value)}
+    $L$ 的\textbf{第二小特征值} $\lambda_2$。
+    \begin{itemize}
+        \item $\lambda_2 > 0 \iff$ 图连通。
+        \item $\lambda_2$ 越大 $\to$ 图越难被切断 (鲁棒)。
+        \item \textbf{Cheeger不等式}: $\lambda_2$ 约束了瓶颈宽窄。
+    \end{itemize}
+    \sepline
+    
+    \subt{谱聚类 (Spectral Clustering)}
+    利用特征向量将图嵌入低维空间，再 K-Means。
+    \textit{原理: 相似的点在特征空间距离近。}
+    \sepline
+    
+    \subt{图的嵌入与表示}
+    \begin{itemize}
+        \item \textbf{图同构}: 判断两图结构是否相同 (NP问题)。
+        \item \textbf{谱半径}: 最大特征值，反映扩散速度。
+    \end{itemize}
+\end{mybox}
+
+\columnbreak
+
+% === 第三栏 ===
+
+\begin{mybox}[5. 网络流 (Network Flow)]{headerblue}
+    \boxdesc{管道、运输与瓶颈}
+    
+    \subt{最大流最小割定理}
+    \begin{center}
+        {\LARGE \textcolor{accentcolor}{MaxFlow = MinCut}}
+    \end{center}
+    \begin{itemize}
+        \item \textbf{最大流}: 源点 $s$ 到汇点 $t$ 能通过的最大流量。
+        \item \textbf{最小割}: 割断最少(容量)的边使 $s-t$ 不连通。
+        \item \textbf{直觉}: 系统的最大产能取决于瓶颈。
+    \end{itemize}
+    \sepline
+    
+    \subt{二分图匹配}
+    转化为最大流问题 (添加源汇点)。
+    \textit{场景: 任务分配、相亲配对。}
+\end{mybox}
+
+\begin{mybox}[6. 复杂网络 (Complex Networks)]{headerblue}
+    \boxdesc{真实世界的网络特征}
+    
+    \subt{小世界效应 (Small World)}
+    \begin{itemize}
+        \item 大部分节点不相邻，但任意两点平均路径短。
+        \item \textbf{六度分隔}: 任何人之间只隔约 6 个人。
+    \end{itemize}
+    \sepline
+    
+    \subt{无标度网络 (Scale-Free)}
+    \begin{itemize}
+        \item \textbf{幂律分布}: $P(k) \sim k^{-\gamma}$。
+        \item \textbf{Hub节点}: 少数节点拥有海量连接 (KOL)。
+        \item \textbf{鲁棒性}: 随机攻击不怕，针对 Hub 攻击脆弱。
+    \end{itemize}
+    \sepline
+    
+    \subt{PageRank}
+    $$ PR(u) = \frac{1-d}{N} + d \sum_{v \in B(u)} \frac{PR(v)}{L(v)} $$
+    \textit{核心: 被重要节点引用的节点更重要 (随机游走稳态)。}
+\end{mybox}
+
+\begin{mybox}[7. Python / NetworkX 实战]{headerblue}
+    \boxdesc{代码工具箱}
+    \begin{itemize}
+        \item \texttt{G = nx.Graph(); G.add\_edge(1, 2)}
+        \item \textbf{最短路}: \texttt{nx.shortest\_path(G, src, dst)}
+        \item \textbf{连通分量}: \texttt{nx.connected\_components(G)}
+        \item \textbf{绘图}: \texttt{nx.draw(G, with\_labels=True)}
+        \item \textbf{PageRank}: \texttt{nx.pagerank(G)}
+    \end{itemize}
+\end{mybox}
+
+\columnbreak
+
+% === 第四栏 ===
+
+\begin{mybox}[8. 高阶理论 (Advanced)]{headerblue}
+    \boxdesc{图论的深水区}
+    
+    \subt{图神经网络 (GNN)}
+    \begin{itemize}
+        \item \textbf{消息传递}: 聚合邻居信息更新节点 Embedding。
+        \item $$ h_v^{(k)} = \sigma( W \cdot \text{AGG}(\{h_u^{(k-1)}\}) ) $$
+        \item \textbf{应用}: 推荐系统、分子性质预测。
+    \end{itemize}
+    \sepline
+    
+    \subt{随机图 (Random Graph)}
+    Erdos-Renyi 模型 $G(n, p)$。研究相变 (Phase Transition)。
+    \sepline
+    
+    \subt{平面图 (Planar Graph)}
+    能画在平面上且边不交叉的图。
+    \textbf{欧拉公式}: $V - E + F = 2$。
+\end{mybox}
+
+\vspace*{\fill}
+
+\begin{mybox}[ 核心直觉 (Intuition)]{intuitioncolor}
+    \boxdesc{“关系比实体更重要。”}
+    
+    % TikZ 矢量图: 展示一个简单的网络结构或最短路直觉
+    \begin{center}
+    \begin{tikzpicture}[scale=0.7, auto, swap]
+        % 节点
+        \foreach \pos/\name in {{(0,2)/a}, {(2,1)/b}, {(4,1)/c},
+                                {(0,0)/d}, {(3,0)/e}, {(2,-1)/f}, {(4,-1)/g}}
+            \node[circle, draw=headerblue, fill=white, thick, inner sep=2pt] (\name) at \pos {$\name$};
+        % 边
+        \foreach \source/ \dest /\weight in {b/a/7, c/b/8,d/a/5,d/b/9,
+                                             e/b/7, e/c/5,f/d/15,f/e/8,
+                                             g/e/9,g/f/11}
+            \path[draw,gray] (\source) -- node[midway, font=\tiny] {$\weight$} (\dest);
+        % 突出一条路径
+        \draw[->, thick, accentcolor] (d) -- (b);
+        \draw[->, thick, accentcolor] (b) -- (e);
+        \draw[->, thick, accentcolor] (e) -- (c);
+        \node[accentcolor, font=\scriptsize] at (2, 2.2) {Path Finding};
+    \end{tikzpicture}
+    \end{center}
+
+    \hspace{1em}图论是研究\textbf{结构}的科学。在图论的视角下，个体是谁并不重要，重要的是它和谁连接，以及它在网络中的位置。
+    \vspace{4pt}
+    
+    \subt{三大核心视角}
+    \begin{itemize}[itemsep=4pt]
+        \item \textbf{路径与流}: 
+        信息、能量或物质如何在网络中流动？最短路径是效率，最大流是容量。
+        
+        \item \textbf{中心性 (Centrality)}: 
+        谁是网络的中心？是连接最多的 (Degree)，还是处于交通要道的 (Betweenness)，还是被大咖关注的 (PageRank)？
+        
+        \item \textbf{谱分析 (Spectrum)}: 
+        图的“指纹”藏在矩阵的特征值里。听图的“声音”(频谱)，就能知道它的结构特征 (如同步能力、聚类倾向)。
+    \end{itemize}
+    
+    \vspace{6pt}
+    \centering\textit{\footnotesize 万物互联，而图论是理解连接的语法。}
+\end{mybox}
+
+\end{multicols*}
+
+\end{document}

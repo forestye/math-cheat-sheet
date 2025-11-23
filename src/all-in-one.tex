@@ -1,0 +1,50 @@
+%!TEX program = xelatex
+\documentclass{article}
+
+% 专门用于合并 PDF 的宏包
+\usepackage{pdfpages}
+
+% 去掉页码（因为被合并的 PDF 已经不需要额外的页码了）
+\pagestyle{empty}
+
+\begin{document}
+
+    % 0. 指南 Guide
+    \includepdf[pages=-, fitpaper=true]{guide.pdf}
+
+    % 0.1 首页 Index
+    \includepdf[pages=-, fitpaper=true]{index.pdf}
+
+    % 1. 基础与描述 (Foundation)
+    \includepdf[pages=-, fitpaper=true]{LinearAlgebra.pdf}
+    \includepdf[pages=-, fitpaper=true]{ProbabilityStatistic.pdf}
+    \includepdf[pages=-, fitpaper=true]{GraphTheory.pdf}
+    \includepdf[pages=-, fitpaper=true]{InformationTheory.pdf}
+
+    % 2. 信号与变换 (Transforms)
+    \includepdf[pages=-, fitpaper=true]{ComplexAnalysis.pdf}
+    \includepdf[pages=-, fitpaper=true]{FourierTransforms.pdf}
+    \includepdf[pages=-, fitpaper=true]{LaplaceZTransforms.pdf}
+
+    % 3. 计算与博弈 (Computation)
+    \includepdf[pages=-, fitpaper=true]{NumericalAnalysis.pdf}
+    \includepdf[pages=-, fitpaper=true]{ConvexOptimization.pdf}
+    \includepdf[pages=-, fitpaper=true]{GameTheory.pdf}
+
+    % 4. 结构与逻辑 (Logic)
+    \includepdf[pages=-, fitpaper=true]{AbstractAlgebra.pdf}
+    \includepdf[pages=-, fitpaper=true]{CategoryTheory.pdf}
+    \includepdf[pages=-, fitpaper=true]{TypeTheory.pdf}
+
+    % 5. 高维与动态 (Dynamics)
+    \includepdf[pages=-, fitpaper=true]{Manifold.pdf}
+    \includepdf[pages=-, fitpaper=true]{StochasticCalculus.pdf}
+    \includepdf[pages=-, fitpaper=true]{Topology.pdf}
+
+    % 6. 上帝视角 (The Endgame)
+    \includepdf[pages=-, fitpaper=true]{FunctionalAnalysis.pdf}
+    \includepdf[pages=-, fitpaper=true]{SymplecticGeometry.pdf}
+    \includepdf[pages=-, fitpaper=true]{AlgebraicGeometry.pdf}
+    \includepdf[pages=-, fitpaper=true]{TensorCalculus.pdf}
+
+\end{document}

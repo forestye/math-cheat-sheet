@@ -1,4 +1,4 @@
-# 📐 Math Cheat Sheet for Engineers
+# 📐 工程师数学速查表 (Math Cheat Sheet for Engineers)
 
 > **"手中无剑（不背细节），心中有剑（深知原理）。"**
 >
@@ -9,6 +9,8 @@
 [](http://makeapullrequest.com)
 
 **Math Cheat Sheet** 是一套专为**资深程序员、算法工程师和架构师**设计的数学速查表（Cheat Sheet）合集。
+
+![Preview](preview.png)
 
 ## 📖 核心哲学 (Philosophy)
 
@@ -34,9 +36,19 @@
 
 ## 🛠️ 使用与编译 (Usage)
 
-如果你想修改内容或自行编译 LaTeX 源码：
+### 1. 自动编译 (Auto Build)
 
-### 1\. 环境要求
+本项目提供了一键编译脚本 `build.ps1` (Windows PowerShell)，它会自动编译所有子模块，并生成最终的合并版本 `math-cheat-sheet.pdf`。
+
+```powershell
+# 在项目根目录下运行
+.\build.ps1
+```
+
+*   **输出**：编译成功后，根目录下会生成 `math-cheat-sheet.pdf`。
+*   **中间文件**：各模块的独立 PDF 文件会生成在 `pdfs/` 目录下（脚本会自动创建该目录）。
+
+### 2. 环境要求 (Requirements)
 
 你需要安装一个支持 XeLaTeX 的 TeX 发行版：
 
@@ -44,17 +56,17 @@
   * **Windows**: [MiKTeX](https://miktex.org/) or [TeX Live](https://www.tug.org/texlive/)
   * **Linux**: TeX Live
 
-### 2\. 编译命令
+### 3. 手动编译 (Manual Compilation)
 
-本项目使用了 `ctex` 宏包以支持中文，**必须使用 `xelatex` 编译器**。
+如果你不使用脚本，也可以手动编译。本项目使用了 `ctex` 宏包以支持中文，**必须使用 `xelatex` 编译器**。
 
 ```bash
 # Clone the repository
 git clone https://github.com/forestye/math-cheat-sheet.git
 cd math-cheat-sheet/src
 
-# Compile (e.g., Linear Algebra)
-xelatex linear_algebra.tex
+# Compile a specific module (e.g., Linear Algebra)
+xelatex -output-directory=../pdfs LinearAlgebra.tex
 ```
 
 -----
@@ -65,6 +77,6 @@ xelatex linear_algebra.tex
 
 -----
 
-**Star ⭐ this repo if it helps you conquer the math world\!**
+**如果本项目能助你征服数学世界，请给个 Star ⭐ 吧！**
 
 -----
